@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Charity.Models.Db;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,8 @@ namespace Charity.Context
             base.OnModelCreating(builder);
         }
 
-
+        public DbSet<Category> Category { get; set; }
+        public DbSet<Institution> Institution { get; set; }
+        public DbSet<Donation> Donation { get; set; }
     }
 }

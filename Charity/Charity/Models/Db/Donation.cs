@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace Charity.Models.Db
 {
@@ -21,5 +22,6 @@ namespace Charity.Models.Db
         public DateTime PickUpDate { get; set; }
         public DateTime PickUpTime { get; set; }
         public string PickUpComment { get; set; }
+        public virtual IdentityUser User { get; set; }
     }
 }
