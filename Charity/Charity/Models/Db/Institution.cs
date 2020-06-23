@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Charity.Models.Db
 {
-    public class Category
+    public class Institution
     {
         public int ID { get; set; }
         [Required]
         public string Name { get; set; }
+        public string Description { get; set; }
     }
 }
