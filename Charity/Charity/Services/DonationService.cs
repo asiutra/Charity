@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Charity.Context;
 using Charity.Models.Db;
 using Charity.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Charity.Services
 {
@@ -19,27 +20,33 @@ namespace Charity.Services
 
         public async Task<bool> CreateAsync(Donation donation)
         {
-            throw new NotImplementedException();
+            _context.Donation.Add(donation);
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<Donation> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Donation.SingleOrDefaultAsync(x => x.ID == id);
         }
 
         public async Task<IList<Donation>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Donation.ToListAsync();
         }
 
         public async Task<bool> UpdateAsync(Donation donation)
         {
-            throw new NotImplementedException();
+            _context.Donation.Update(donation);
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var donation = _context.Donation.SingleOrDefault(x => x.ID == id);
+            if (donation == null) return false;
+
+            _context.Donation.Remove(donation);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
