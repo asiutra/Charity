@@ -6,7 +6,7 @@ using Charity.Models.Db;
 
 namespace Charity.Services.Interfaces
 {
-    interface ICategoryService
+    public interface ICategoryService
     {
         Task<bool> CreateAsync(Category category);
         Task<Category> GetAsync(int id);

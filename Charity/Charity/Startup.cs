@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Charity.Context;
+using Charity.Services;
+using Charity.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,11 +35,13 @@ namespace Charity
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddDbContext<CharityContext>(builder =>
-                builder.UseSqlServer(Configuration.GetConnectionString("SQL")));
+            services.AddDbContext<CharityContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("SQL")));
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CharityContext>();
 
-
+            //Register all service
+            services.AddScoped<IInstitutionService, InstitutionService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IDonationService, DonationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
