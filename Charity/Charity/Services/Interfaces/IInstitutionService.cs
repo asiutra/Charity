@@ -6,7 +6,7 @@ using Charity.Models.Db;
 
 namespace Charity.Services.Interfaces
 {
-    interface IInstitutionService
+    public interface IInstitutionService
     {
         Task<bool> CreateAsync(Institution institution);
         Task<Institution> GetAsync(int id);
