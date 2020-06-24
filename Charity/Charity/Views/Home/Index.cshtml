@@ -4,10 +4,19 @@
     Layout = "_Layout";
 }
 
+@{
+    var countOfQuantity = 0;
+}
+
+@foreach (var count in (IList<Donation>)ViewBag.Quantity)
+{
+    countOfQuantity += count.Quantity;
+}
+
 <section id="stats" class="stats">
     <div class="container container--85">
         <div class="stats--item">
-            <em>10</em>
+            <em>@countOfQuantity</em>
             <h3>Oddanych worków</h3>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum tempora!</p>
         </div>
@@ -85,9 +94,9 @@
                         @*Do usunięcia ten blok catch*@
 
                         @*<div class="col">
-                            <div class="title"></div>
-                            <div class="subtitle"></div>
-                        </div>*@
+                                <div class="title"></div>
+                                <div class="subtitle"></div>
+                            </div>*@
                     }
 
                     @try
@@ -102,9 +111,9 @@
                         @*Gdy mamy 3 fundacje to w miejscu 4 coś podstawić czy zostawić pole puste?*@
 
                         @*<div class="col">
-                            <div class="title"></div>
-                            <div class="subtitle"></div>
-                        </div>*@
+                                <div class="title"></div>
+                                <div class="subtitle"></div>
+                            </div>*@
                     }
 
                 </li>
