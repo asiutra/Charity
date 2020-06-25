@@ -13,5 +13,7 @@ namespace Charity.Services.Interfaces
         Task<IList<Donation>> GetAllAsync();
         Task<bool> UpdateAsync(Donation donation);
         Task<bool> DeleteAsync(int id);
+        Task<int> CountInstitution();
+        Task<int> SumOfAllQuantity();
     }
 }

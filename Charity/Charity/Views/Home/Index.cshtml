@@ -1,34 +1,27 @@
-﻿@model IList<Institution>
+﻿@model IndexViewModel
 @{
     ViewBag.Title = "Strona gówna";
     Layout = "_Layout";
 }
 
-@{
-    var countOfQuantity = 0;
-}
-
-@foreach (var count in (IList<Donation>)ViewBag.Quantity)
-{
-    countOfQuantity += count.Quantity;
-}
 
 <section id="stats" class="stats">
     <div class="container container--85">
         <div class="stats--item">
-            <em>@countOfQuantity</em>
+            <em>@Model.SumOfQuantity</em>
             <h3>Oddanych worków</h3>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum tempora!</p>
         </div>
 
         <div class="stats--item">
-            <em>5</em>
+            <em>@Model.CountSupportedCharities</em>
             <h3>Wspartych organizacji</h3>
             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam magnam, sint nihil cupiditate quas quam.</p>
         </div>
 
     </div>
 </section>
+
 
 <section id="steps" class="steps">
     <h2>Wystarczą 4 proste kroki</h2>
@@ -59,6 +52,7 @@
     <a href="#" class="btn btn--large">Załóż konto</a>
 </section>
 
+
 <section id="about-us" class="about-us">
     <div class="about-us--text">
         <h2>O nas</h2>
@@ -67,6 +61,7 @@
     </div>
     <div class="about-us--image"><img src="~/images/about-us.jpg" alt="People in circle" /></div>
 </section>
+
 
 <section id="help" class="help">
     <h2>Komu pomagamy?</h2>
@@ -78,15 +73,15 @@
             Możesz sprawdzić czym się zajmują.
         </p>
 
-        @for (int i = 0; i < Model.Count; i += 2)
+        @for (int i = 0; i < Model.InstitutionList.Count; i += 2)
         {
             <ul class="help--slides-items">
                 <li>
                     @try
                     {
                         <div class="col">
-                            <div class="title">@Model[i].Name</div>
-                            <div class="subtitle">@Model[i].Description</div>
+                            <div class="title">@Model.InstitutionList[i].Name</div>
+                            <div class="subtitle">@Model.InstitutionList[i].Description</div>
                         </div>
                     }
                     catch (ArgumentOutOfRangeException e)
@@ -102,8 +97,8 @@
                     @try
                     {
                         <div class="col">
-                            <div class="title">@Model[i + 1].Name</div>
-                            <div class="subtitle">@Model[i + 1].Description</div>
+                            <div class="title">@Model.InstitutionList[i].Name</div>
+                            <div class="subtitle">@Model.InstitutionList[i].Description</div>
                         </div>
                     }
                     catch (ArgumentOutOfRangeException e)

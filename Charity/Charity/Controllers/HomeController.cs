@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Charity.Models;
 using Charity.Models.Db;
+using Charity.Models.ViewModel;
 using Charity.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,22 +13,19 @@ namespace Charity.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IInstitutionService _institutionService;
-        private readonly IDonationService _donationService;
-
-        public HomeController(IInstitutionService institutionService, IDonationService donationService)
-        {
-            _institutionService = institutionService;
-            _donationService = donationService;
-        }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices] IInstitutionService institutionService, [FromServices] IDonationService donationService, [FromServices] ICategoryService categoryService)
         {
-            var count = await _donationService.GetAllAsync();
-            ViewBag.Quantity = count;
+            var viewModel = new IndexViewModel()
+            {
+                InstitutionList = await institutionService.GetAllAsync(),
+                CountSupportedCharities = await donationService.CountInstitution(),
+                SumOfQuantity = await donationService.SumOfAllQuantity(),
+                //DonationList = await donationService.GetAllAsync(),
+                //CategoryList = await categoryService.GetAllAsync()
+            };
 
-            var institutions = await _institutionService.GetAllAsync();
-            return View(institutions);
+            return View(viewModel);
         }
 
         public IActionResult Error()

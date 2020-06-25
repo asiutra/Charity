@@ -48,5 +48,15 @@ namespace Charity.Services
             _context.Donation.Remove(donation);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<int> CountInstitution()
+        {
+            return await _context.Donation.Select(x => x.Institutions).Distinct().CountAsync();
+        }
+
+        public async Task<int> SumOfAllQuantity()
+        {
+            return await _context.Donation.Select(x => x.Quantity).SumAsync();
+        }
     }
 }
