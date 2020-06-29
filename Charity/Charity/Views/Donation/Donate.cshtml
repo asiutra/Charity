@@ -60,7 +60,7 @@
                 <div class="form-group form-group--inline">
                     <label>
                         Liczba 60l worków:
-                        <input asp-for="QuantityBag" type="number" name="bags" step="1" min="1" />
+                        <input asp-for="QuantityBag" type="number" name="bags" id="summary-bags" step="1" min="1" />
                     </label>
                 </div>
 
@@ -72,7 +72,7 @@
 
 
 
-            <!-- STEP 4 -->
+            <!-- STEP 3 -->
             <div data-step="3">
                 <h3>Wybierz organizacje, której chcesz pomóc:</h3>
 
@@ -80,7 +80,7 @@
                 {
                     <div class="form-group form-group--checkbox">
                         <label>
-                            <input type="radio" name="organization" value=@organization.ID />
+                            <input asp-for="Institution" type="radio" name="Foundation" value=@organization.Name />
                             <span class="checkbox radio"></span>
                             <span class="description">
                                 <div class="title">@organization.Name</div>
@@ -98,7 +98,7 @@
                 </div>
             </div>
 
-            <!-- STEP 5 -->
+            <!-- STEP 4 -->
             <div data-step="4">
                 <h3>Podaj adres oraz termin odbioru rzecz przez kuriera:</h3>
 
@@ -106,22 +106,22 @@
                     <div class="form-section--column">
                         <h4>Adres odbioru</h4>
                         <div class="form-group form-group--inline">
-                            <label> Ulica <input asp-for="Street" type="text" name="address" /> </label>
+                            <label> Ulica <input asp-for="Street" type="text" name="address" id="summary-street" /> </label>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <label> Miasto <input asp-for="City" type="text" name="city" /> </label>
+                            <label> Miasto <input asp-for="City" type="text" name="city" id="summary-city" /> </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
-                                Kod pocztowy <input asp-for="ZipCode" type="text" name="postcode" />
+                                Kod pocztowy <input asp-for="ZipCode" type="text" name="postcode" id="summary-zipcode" />
                             </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
-                                Numer telefonu <input asp-for="PhoneNumber" type="phone" name="phone" />
+                                Numer telefonu <input asp-for="PhoneNumber" type="phone" name="phone" id="summary-phonenumber" />
                             </label>
                         </div>
                     </div>
@@ -129,28 +129,67 @@
                     <div class="form-section--column">
                         <h4>Termin odbioru</h4>
                         <div class="form-group form-group--inline">
-                            <label> Data <input asp-for="PickUpDate" type="date" name="data" /> </label>
+                            <label> Data <input asp-for="PickUpDate" type="date" name="data" id="summary-pickupdate" /> </label>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <label> Godzina <input asp-for="PickUpTime" type="time" name="time" /> </label>
+                            <label> Godzina <input asp-for="PickUpTime" type="time" name="time" id="summary-pickuptime" /> </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
                                 Uwagi dla kuriera
-                                <textarea asp-for="PickUpComment" name="more_info" rows="5"></textarea>
+                                <textarea asp-for="PickUpComment" name="more_info" rows="5" id="summary-pickupcomment"></textarea>
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group form-group--buttons">
                     <button type="button" class="btn prev-step">Wstecz</button>
-                    <button type="button" class="btn next-step">Dalej</button>
+                    <button type="button" class="btn next-step" id="summary">Dalej</button>
                 </div>
             </div>
 
-            <!-- STEP 6 -->
+
+            <!--
+                Zmienne ID:
+                summary             -> dla ostatniego przycisku "dalej"
+                summary-bags        -> tam gdzie wpisujemy wartość worków
+                summary-bags-output -> tutaj ma się pojawić nasz .innerHTML z przypisaną wartością
+            -->
+            <!-- STEP 5 -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $("#summary").click(function () {
+
+                        var SlecectedFoundation = $("input[name='Foundation']:checked").val();
+                        var QuantityBags = $("#summary-bags").val();
+                        var Street = $("#summary-street").val();
+                        var City = $("#summary-city").val();
+                        var ZipCode = $("#summary-zipcode").val();
+                        var PhoneNumber = $("#summary-phonenumber").val();
+                        var PickupDate = $("#summary-pickupdate").val();
+                        var PickupTime = $("#summary-pickuptime").val();
+                        var Comment = $("#summary-pickupcomment").val();
+
+
+                        document.getElementById("summary-institution-output").innerHTML = SlecectedFoundation;
+                        document.getElementById("summary-bags-output").innerHTML = QuantityBags;
+                        document.getElementById("summary-street-output").innerHTML = Street;
+                        document.getElementById("summary-city-output").innerHTML = City;
+                        document.getElementById("summary-zipcode-output").innerHTML = ZipCode;
+                        document.getElementById("summary-phonenumber-output").innerHTML = PhoneNumber;
+                        document.getElementById("summary-pickupdate-output").innerHTML = PickupDate;
+                        document.getElementById("summary-pickuptime-output").innerHTML = PickupTime;
+                        document.getElementById("summary-pickupcomment-output").innerHTML = Comment;
+
+                    });
+                });
+            </script>
+
+
+
             <div data-step="5">
                 <h3>Podsumowanie Twojej darowizny</h3>
 
@@ -160,13 +199,12 @@
                         <ul>
                             <li>
                                 <span class="icon icon-bag"></span>
-                                @*<span class="summary--text">4 worki ubrań w dobrym stanie dla dzieci</span>*@
-                                <span class="summary--text">@Model.QuantityBag</span>
+                                <span class="summary--text" id="summary-bags-output"></span>
                             </li>
 
                             <li>
                                 <span class="icon icon-hand"></span>
-                                <span class="summary--text">Dla fundacji "Mam marzenie" w Warszawie</span>
+                                <span class="summary--text" id="summary-institution-output"></span>
                             </li>
                         </ul>
                     </div>
@@ -175,19 +213,19 @@
                         <div class="form-section--column">
                             <h4>Adres odbioru:</h4>
                             <ul>
-                                <li>Prosta 51</li>
-                                <li>Warszawa</li>
-                                <li>99-098</li>
-                                <li>123 456 789</li>
+                                <li id="summary-street-output">Prosta 51</li>
+                                <li id="summary-city-output">Warszawa</li>
+                                <li id="summary-zipcode-output">99-098</li>
+                                <li id="summary-phonenumber-output">123 456 789</li>
                             </ul>
                         </div>
 
                         <div class="form-section--column">
                             <h4>Termin odbioru:</h4>
                             <ul>
-                                <li>13/12/2018</li>
-                                <li>15:40</li>
-                                <li>Brak uwag</li>
+                                <li id="summary-pickupdate-output">13/12/2018</li>
+                                <li id="summary-pickuptime-output">15:40</li>
+                                <li id="summary-pickupcomment-output">Brak uwag</li>
                             </ul>
                         </div>
                     </div>
