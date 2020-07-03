@@ -4,8 +4,6 @@
     Layout = "_Layout";
 }
 
-<h1>Donate</h1>
-
 <section class="form--steps">
     <div class="form--steps-instructions">
         <div class="form--steps-container">
@@ -29,7 +27,7 @@
     <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/4</div>
 
-        <form asp-controller="Donation" asp-action="Donate" method="post">
+        <form asp-action="Donate">
             <!-- STEP 1: class .active is switching steps -->
             <div data-step="1" class="active">
                 <h3>Zaznacz co chcesz oddać:</h3>
@@ -37,15 +35,44 @@
                 @for (var i = 0; i < Model.CategoryItems.Count; i++)
                 {
                     <div class="form-group form-group--checkbox">
+
+                        @*<label>
+                                <input type="checkbox" asp-for="CategoryItems[i].Selected" value=@Model.CategoryItems[i].Value />
+                                <span class="checkbox"></span>
+                                <span class="description">@Model.CategoryItems[i].Text</span>
+                            </label>*@
+                        @*<label>
+                                <input type="checkbox" asp-for="CategoryItems[i].Selected" />
+                                <label asp-for="CategoryItems[i].Selected">@Model.CategoryItems[i].Text</label>
+                                <input type="hidden" asp-for="CategoryItems[i].Value" />
+                                <input type="hidden" asp-for="CategoryItems[i].Text" />
+                                <span class="checkbox"></span>
+                                <span class="description">@Model.CategoryItems[i].Text</span>
+                            </label>*@
+
                         <label>
-                            <input type="checkbox" asp-for="CategoryItems[i].Selected"
-                                   name="categories"
-                                   value=@Model.CategoryItems[i].Value />
-                            <span class="checkbox"></span>
+                            <input asp-for="CategoryItems[i].Selected" type="checkbox"/>
+                            <span class="checkbox">
+                                <input asp-for="CategoryItems[i].Value" type="hidden" value=@Model.CategoryItems[i].Value/>
+                            </span>
+                            <input asp-for="CategoryItems[i].Text" type="hidden" value=@Model.CategoryItems[i].Text/>
                             <span class="description">@Model.CategoryItems[i].Text</span>
                         </label>
                     </div>
                 }
+
+
+                @*@for (int i = 0; i < Model.CategoryItems.Count; i++)
+                    {
+                        <div class="form-group form-group--checkbox">
+                        @Html.CheckBoxFor(x => x.CategoryItems[i].Selected)
+
+                        @Html.DisplayFor(x => x.CategoryItems[i].Text)
+                        @Html.HiddenFor(x => x.CategoryItems[i].Value)
+                        @Html.HiddenFor(x => x.CategoryItems[i].Text)
+                        </div>
+                    }*@
+
 
 
                 <div class="form-group form-group--buttons">
@@ -58,9 +85,9 @@
                 <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
 
                 <div class="form-group form-group--inline">
-                    <label>
+                    <label asp-for="QuantityBag">
                         Liczba 60l worków:
-                        <input asp-for="QuantityBag" type="number" name="bags" id="summary-bags" step="1" min="1" />
+                        <input asp-for="QuantityBag" type="number" id="summary-bags" step="1" min="1" />
                     </label>
                 </div>
 
@@ -80,7 +107,7 @@
                 {
                     <div class="form-group form-group--checkbox">
                         <label>
-                            <input asp-for="Institution" type="radio" name="Foundation" value=@organization.Name />
+                            <input asp-for="Institution" type="radio" value=@organization.Name />
                             <span class="checkbox radio"></span>
                             <span class="description">
                                 <div class="title">@organization.Name</div>
@@ -106,22 +133,22 @@
                     <div class="form-section--column">
                         <h4>Adres odbioru</h4>
                         <div class="form-group form-group--inline">
-                            <label> Ulica <input asp-for="Street" type="text" name="address" id="summary-street" /> </label>
+                            <label asp-for="Street"> Ulica <input asp-for="Street" type="text" id="summary-street" /> </label>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <label> Miasto <input asp-for="City" type="text" name="city" id="summary-city" /> </label>
+                            <label> Miasto <input asp-for="City" type="text" id="summary-city" /> </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
-                                Kod pocztowy <input asp-for="ZipCode" type="text" name="postcode" id="summary-zipcode" />
+                                Kod pocztowy <input asp-for="ZipCode" type="text" id="summary-zipcode" />
                             </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
-                                Numer telefonu <input asp-for="PhoneNumber" type="phone" name="phone" id="summary-phonenumber" />
+                                Numer telefonu <input asp-for="PhoneNumber" type="phone" id="summary-phonenumber" />
                             </label>
                         </div>
                     </div>
@@ -129,17 +156,17 @@
                     <div class="form-section--column">
                         <h4>Termin odbioru</h4>
                         <div class="form-group form-group--inline">
-                            <label> Data <input asp-for="PickUpDate" type="date" name="data" id="summary-pickupdate" /> </label>
+                            <label> Data <input asp-for="PickUpDate" type="date" id="summary-pickupdate" /> </label>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <label> Godzina <input asp-for="PickUpTime" type="time" name="time" id="summary-pickuptime" /> </label>
+                            <label> Godzina <input asp-for="PickUpTime" type="time" id="summary-pickuptime" /> </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
                                 Uwagi dla kuriera
-                                <textarea asp-for="PickUpComment" name="more_info" rows="5" id="summary-pickupcomment"></textarea>
+                                <textarea asp-for="PickUpComment" rows="5" id="summary-pickupcomment"></textarea>
                             </label>
                         </div>
                     </div>
@@ -163,7 +190,7 @@
                 $(document).ready(function () {
                     $("#summary").click(function () {
 
-                        var SlecectedFoundation = $("input[name='Foundation']:checked").val();
+                        var SlecectedFoundation = $("input[id='Institution']:checked").val();
                         var QuantityBags = $("#summary-bags").val();
                         var Street = $("#summary-street").val();
                         var City = $("#summary-city").val();

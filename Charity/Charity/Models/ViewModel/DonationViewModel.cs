@@ -12,7 +12,7 @@ namespace Charity.Models.ViewModel
         public IList<Category> Categories;
         public IList<SelectListItem> CategoryItems { get; set; }
         public IList<Institution> Institutions;
-        public int QuantityBag;
+        public int QuantityBag { get; set; }
         public string Institution { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
