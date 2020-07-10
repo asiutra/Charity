@@ -38,6 +38,16 @@ namespace Charity
             services.AddDbContext<CharityContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("SQL")));
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CharityContext>();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings - simple
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 3;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            });
+
             //Register all service
             services.AddScoped<IInstitutionService, InstitutionService>();
             services.AddScoped<ICategoryService, CategoryService>();
