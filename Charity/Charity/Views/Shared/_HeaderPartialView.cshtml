@@ -3,7 +3,8 @@
     string handlingMethod = this.ViewContext.RouteData.Values["action"].ToString();
 }
 
-@*solution below has a better performance than using in header tag class variable which contain required value*@
+@*solution below has a better performance than using in header tag class variable which contain required value
+    TODO: MAKE BETTER SOLUTION FOR REPETITIVE ELEMENTS!!  *@
 
 
 @if (handlingController == "Donation" && handlingMethod == "Donate")
@@ -28,7 +29,7 @@
             else
             {
                 <ul class="nav--actions">
-                    <li><a href="" class="btn btn--small btn--without-border">Zaloguj</a></li>
+                    <li><a asp-controller="Account" asp-action="Login" class="btn btn--small btn--without-border">Zaloguj</a></li>
                     <li><a asp-controller="Account" asp-action="Register" class="btn btn--small btn--highlighted">Załóż konto</a></li>
                 </ul>
             }
@@ -92,7 +93,7 @@ else if (handlingController == "Donation" && handlingMethod == "Confirmation")
             else
             {
                 <ul class="nav--actions">
-                    <li><a href="" class="btn btn--small btn--without-border">Zaloguj</a></li>
+                    <li><a asp-controller="Account" asp-action="Login" class="btn btn--small btn--without-border">Zaloguj</a></li>
                     <li><a asp-controller="Account" asp-action="Register" class="btn btn--small btn--highlighted">Załóż konto</a></li>
                 </ul>
             }
@@ -136,7 +137,7 @@ else if (handlingController == "Home" && handlingMethod == "Index")
             else
             {
                 <ul class="nav--actions">
-                    <li><a href="" class="btn btn--small btn--without-border">Zaloguj</a></li>
+                    <li><a asp-controller="Account" asp-action="Login" class="btn btn--small btn--without-border">Zaloguj</a></li>
                     <li><a asp-controller="Account" asp-action="Register" class="btn btn--small btn--highlighted">Załóż konto</a></li>
                 </ul>
             }
@@ -162,7 +163,7 @@ else if (handlingController == "Home" && handlingMethod == "Index")
     </header>
 }
 
-else if (handlingController == "Account" && handlingMethod == "Register")
+else if (handlingController == "Account" && handlingMethod == "Register" || handlingMethod == "Login")
 {
     <header>
         <nav class="container container--70">
@@ -183,7 +184,7 @@ else if (handlingController == "Account" && handlingMethod == "Register")
             }
 
             <ul class="nav--actions">
-                <li><a href="" class="btn btn--small btn--without-border">Zaloguj</a></li>
+                <li><a asp-controller="Account" asp-action="Login" class="btn btn--small btn--without-border">Zaloguj</a></li>
                 <li><a asp-controller="Account" asp-action="Register" class="btn btn--small btn--highlighted">Załóż konto</a></li>
             </ul>
 

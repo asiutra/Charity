@@ -48,6 +48,27 @@ namespace Charity.Controllers
         }
 
         [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await SignInManager.PasswordSignInAsync(viewModel.Email, viewModel.Password, false, false);
+
+                if (result.Succeeded)
+                    return RedirectToAction("Index", "Home");
+                ModelState.AddModelError("", "Błąd logowania");
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await SignInManager.SignOutAsync();
