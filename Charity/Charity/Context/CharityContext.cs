@@ -20,5 +20,6 @@ namespace Charity.Context
         public DbSet<Category> Category { get; set; }
         public DbSet<Institution> Institution { get; set; }
         public DbSet<Donation> Donation { get; set; }
+        public DbSet<DonationCategory> DonationCategory { get; set; }
     }
 }

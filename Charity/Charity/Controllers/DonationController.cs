@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Charity.Models.Db;
+using Charity.Models.Form;
 using Charity.Models.ViewModel;
 using Charity.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -29,42 +31,60 @@ namespace Charity.Controllers
         [HttpGet]
         public async Task<IActionResult> Donate()
         {
-            var ViewModel = new DonationViewModel();
+            var categoryList = await _categoryService.GetAllAsync();
+            var CategoryCheckBox = new List<CheckBoxModel>();
 
-            //ViewModel.CategoryItems = new List<SelectListItem>()
-            //{
-            //    new SelectListItem{Value = _categoryService.GetAsync(1).Result.ID.ToString(), Text = _categoryService.GetAsync(1).Result.Name},
-            //    new SelectListItem{Value = _categoryService.GetAsync(2).Result.ID.ToString(), Text = _categoryService.GetAsync(2).Result.Name},
-            //    new SelectListItem{Value = _categoryService.GetAsync(3).Result.ID.ToString(), Text = _categoryService.GetAsync(3).Result.Name},
-            //    new SelectListItem{Value = _categoryService.GetAsync(4).Result.ID.ToString(), Text = _categoryService.GetAsync(4).Result.Name},
-            //    new SelectListItem{Value = _categoryService.GetAsync(5).Result.ID.ToString(), Text = _categoryService.GetAsync(5).Result.Name}
-            //};
-
-
-
-            var categories = await _categoryService.GetAllAsync();
-            List<SelectListItem> categoryItems = new List<SelectListItem>();
-            foreach (var category in categories)
+            foreach (var category in categoryList)
             {
-                categoryItems.Add(new SelectListItem(category.Name, category.ID.ToString()));
+                CategoryCheckBox.Add(new CheckBoxModel
+                {
+                    id = category.Id,
+                    Text = category.Name,
+                });
             }
 
-            ViewModel.CategoryItems = categoryItems;
 
+            var institutionList = await _institutionService.GetAllAsync();
+            var institutionRb = new List<RadioButtonModel>();
 
+            foreach (var institution in institutionList)
+            {
+                institutionRb.Add(new RadioButtonModel
+                {
+                    Id = institution.Id,
+                    Description = institution.Description,
+                    Name = institution.Name
+                });
+            }
 
+            var viewModel = new DonationViewModel()
+            {
+                CheckBoxItems = CategoryCheckBox,
+                Institutions = institutionRb,
+            };
 
-
-            ViewModel.Institutions = await _institutionService.GetAllAsync();
-
-            return View(ViewModel);
+            return View(viewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> Donate(DonationViewModel viewModel)
         {
+            var errors = ModelState
+                .Where(x => x.Value.Errors.Count > 0)
+                .Select(x => new { x.Key, x.Value.Errors })
+                .ToArray();
+
             if (!ModelState.IsValid)
                 return View(viewModel);
+
+
+            var categories = viewModel.CheckBoxItems.Where(x => x.IsChecked).ToList();
+            var categoriesList = new List<DonationCategory>();
+
+            foreach (var category in categories)
+            {
+                categoriesList.Add(new DonationCategory {CategoryId = category.id, DonationId = viewModel.Id});
+            }
 
             //Handle for registered and logged user
             //var user = _userManager.GetUserAsync(User);
@@ -73,35 +93,30 @@ namespace Charity.Controllers
             //    ModelState.AddModelError("", "Błąd w tworzenia darowizny");
             //    return View(viewModel);
             //}
-
-            //List<string> selectedText = null;
-            //List<string> selectedValue = null;
-            //foreach (var category in viewModel.CategoryItems)
-            //{
-            //    if (category.Selected)
-            //    {
-            //        selectedText.Add(category.Text);
-            //        selectedValue.Add(category.Value);
-            //    }
-            //}
+            
 
             var donation = new Donation()
             {
+                PhoneNumber = viewModel.PhoneNumber,
+                City = viewModel.City,
                 Street = viewModel.Street,
                 ZipCode = viewModel.ZipCode,
-                Quantity = viewModel.QuantityBag,
+                Quantity = viewModel.Quantity,
                 PickUpDate = viewModel.PickUpDate,
                 PickUpTime = viewModel.PickUpTime,
-                PickUpComment = viewModel.PickUpComment
+                PickUpComment = viewModel.PickUpComment,
+                Categories = categoriesList,
+                Institution = await _institutionService.GetAsync(viewModel.Institution.Id),
             };
 
-            //var result = await _donationService.CreateAsync(donation);
+            var result = await _donationService.CreateAsync(donation);
 
-            //if (result == false)
-            //{
-            //    ModelState.AddModelError("", "Błąd w tworzenia darowizny");
-            //    return View(viewModel);
-            //}
+            if (result == false)
+            {
+                ModelState.AddModelError("", "Błąd w tworzenia darowizny");
+                return View(viewModel);
+            }
+
 
             return RedirectToAction("Confirmation");
         }

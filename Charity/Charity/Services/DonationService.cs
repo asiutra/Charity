@@ -20,13 +20,13 @@ namespace Charity.Services
 
         public async Task<bool> CreateAsync(Donation donation)
         {
-            _context.Donation.Add(donation);
+            _context.Add(donation);
             return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<Donation> GetAsync(int id)
         {
-            return await _context.Donation.SingleOrDefaultAsync(x => x.ID == id);
+            return await _context.Donation.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IList<Donation>> GetAllAsync()
@@ -42,7 +42,7 @@ namespace Charity.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var donation = _context.Donation.SingleOrDefault(x => x.ID == id);
+            var donation = _context.Donation.SingleOrDefault(x => x.Id == id);
             if (donation == null) return false;
 
             _context.Donation.Remove(donation);
@@ -51,12 +51,12 @@ namespace Charity.Services
 
         public async Task<int> CountInstitution()
         {
-            return await _context.Donation.Select(x => x.Institutions).Distinct().CountAsync();
+            return await _context.Institution.Distinct().CountAsync();
         }
 
         public async Task<int> SumOfAllQuantity()
         {
-            return await _context.Donation.Select(x => x.Quantity).SumAsync();
+            return await _context.Donation.SumAsync(x => x.Quantity);
         }
     }
 }

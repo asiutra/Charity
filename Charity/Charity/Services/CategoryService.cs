@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Charity.Context;
 using Charity.Models.Db;
 using Charity.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Charity.Services
@@ -26,13 +27,14 @@ namespace Charity.Services
 
         public async Task<Category> GetAsync(int id)
         {
-            return await _context.Category.SingleOrDefaultAsync(x => x.ID == id);
+            return await _context.Category.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IList<Category>> GetAllAsync()
         {
             return await _context.Category.ToListAsync();
         }
+
 
         public async Task<bool> UpdateAsync(Category category)
         {
@@ -42,7 +44,7 @@ namespace Charity.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var category = _context.Category.SingleOrDefault(x => x.ID == id);
+            var category = _context.Category.SingleOrDefault(x => x.Id == id);
             if (category == null) return false;
 
             _context.Category.Remove(category);
