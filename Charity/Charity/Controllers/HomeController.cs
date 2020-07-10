@@ -21,8 +21,6 @@ namespace Charity.Controllers
                 InstitutionList = await institutionService.GetAllAsync(),
                 CountSupportedCharities = await donationService.CountInstitution(),
                 SumOfQuantity = await donationService.SumOfAllQuantity(),
-                //DonationList = await donationService.GetAllAsync(),
-                //CategoryList = await categoryService.GetAllAsync()
             };
 
             return View(viewModel);

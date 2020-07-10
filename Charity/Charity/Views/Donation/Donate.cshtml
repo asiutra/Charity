@@ -76,88 +76,20 @@
             <div data-step="3">
                 <h3>Wybierz organizacje, której chcesz pomóc:</h3>
 
-                @*@foreach (var organization in Model.Institutions)
-                    {
-                        <div class="form-group form-group--checkbox">*@
-                @*<label>
-                        <input asp-for="Institution" type="radio" value=@organization.Name />
-                        <span class="checkbox radio"></span>
-                        <span class="description">
-                            <div class="title">@organization.Name</div>
-                            <div class="subtitle">
-                                @organization.Description
-                            </div>
-                        </span>
-                    </label>*@
-
-                @*<label>
-                                @Html.RadioButtonFor(x => x.Institution.Id, organization.Id)
-                                <input type="hidden" />
-                                <input asp-for="Institution" type="radio" value=@organization.Name />
-                                <span class="checkbox radio"></span>
-                                <span class="description">
-                                    <div class="title">@organization.Name</div>
-                                    <div class="subtitle">
-                                        @organization.Description
-                                    </div>
-                                </span>
-                            </label>
-                        </div>
-                    }*@
-
                 @for (int i = 0; i < Model.Institutions.Count; i++)
                 {
                     <div class="form-group form-group--checkbox">
-
                         <label>
-                            @*@Html.RadioButtonFor(x => x.Institution.Id, Model.Institutions[i].Id)
-                            <input type="hidden" asp-for="@Model.Institutions[i].Name" />
-                            <input type="hidden" asp-for="@Model.Institutions[i].Description" />
-                            <input type="hidden" asp-for="@Model.Institutions[i].Id" />
-                            <span class="checkbox radio"></span>
-                            <span class="description">
-                                <div class="title">@Model.Institutions[i].Name</div>
-                                <div class="subtitle">
-                                    @Model.Institutions[i].Description
-                                </div>
-                            </span>*@
-
                             <label>
-                                @*@Html.RadioButtonFor(x => x.Institution.Name, @Model.Institutions[i].Name)
-                                <input asp-for="@Model.Institutions[i].Id" type="radio" />  chyba do wywalniea przetestować czy name przekaze value do kontrolera*@
-
-                                @Html.RadioButtonFor(x => x.Institution.Id, @Model.Institutions[i].Id)
+                                @Html.RadioButtonFor(x => x.Institution.Id, @Model.Institutions[i].Id, new { idname = @Model.Institutions[i].Name })
                                 <span class="checkbox radio"></span>
                                 <span class="description">
-                                    @*<input type="hidden" asp-for="@Model.Institutions[i].Id" value="@Model.Institutions[i].Id" />
-                                    <input type="hidden" asp-for="@Model.Institutions[i].Description" value="@Model.Institutions[i].Description" />*@
-                                    <input type="hidden" asp-for="@Model.Institutions[i].Name" value="@Model.Institutions[i].Name"/>
                                     <div class="title" id="summary-institution">@Model.Institutions[i].Name</div>
                                     <div class="subtitle">
                                         @Model.Institutions[i].Description
                                     </div>
                                 </span>
-                                
-                                
-
-
-                                @*@Html.RadioButton(@Model.Institutions[i].Id.ToString(), @Model.Institutions[i].Id)
-                                @Html.RadioButton(@Model.Institutions[i].Name, @Model.Institutions[i].Name, new { @type = "hidden" })
-                                @Html.RadioButton(@Model.Institutions[i].Description, @Model.Institutions[i].Description, new { @type = "hidden" })
-                                <span class="checkbox radio"></span>
-                                <span class="description">
-                                    <input type="hidden" asp-for="@Model.Institutions[i].Id" value="@Model.Institutions[i].Id" />
-                                    <input type="hidden" asp-for="@Model.Institutions[i].Description" value="@Model.Institutions[i].Description" />
-                                    <input type="hidden" asp-for="@Model.Institutions[i].Name" value="@Model.Institutions[i].Name" />
-                                    <div class="title">@Model.Institutions[i].Name</div>
-                                    <div class="subtitle">
-                                        @Model.Institutions[i].Description
-                                    </div>
-                                </span>*@
-
-
                             </label>
-
                         </label>
                     </div>
                 }
@@ -223,10 +155,10 @@
 
 
             <!--
-                Zmienne ID:
-                summary             -> dla ostatniego przycisku "dalej"
-                summary-bags        -> tam gdzie wpisujemy wartość worków
-                summary-bags-output -> tutaj ma się pojawić nasz .innerHTML z przypisaną wartością
+                variables Id's:
+                summary             -> for last button "dalej"
+                summary-bags        -> here we type q-ty of bags
+                summary-bags-output -> here should show our .innerHTML with assign value
             -->
             <!-- STEP 5 -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -234,8 +166,7 @@
                 $(document).ready(function () {
                     $("#summary").click(function () {
 
-                        var SlecectedFoundation = $("input[id='Id']:checked").val();
-                        //var SlecectedFoundation = $("#summary-institution").val();
+                        var SlecectedFoundation = $("input[name='Institution.Id']:checked").attr("idname");
                         var QuantityBags = $("#summary-bags").val();
                         var Street = $("#summary-street").val();
                         var City = $("#summary-city").val();
@@ -255,6 +186,7 @@
                         document.getElementById("summary-pickupdate-output").innerHTML = PickupDate;
                         document.getElementById("summary-pickuptime-output").innerHTML = PickupTime;
                         document.getElementById("summary-pickupcomment-output").innerHTML = Comment;
+
 
                     });
                 });
