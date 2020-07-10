@@ -26,7 +26,18 @@ namespace Charity.Services
 
         public async Task<Institution> GetAsync(int id)
         {
-            return await _context.Institution.SingleOrDefaultAsync(x => x.ID == id);
+            return await _context.Institution.SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<int> GetAsyncId(string name)
+        {
+            int id = await _context.Institution.Where(n => n.Name == name).Select(n => n.Id).SingleOrDefaultAsync();
+            return id;
+        }
+
+        public async Task<Institution> GetAsyncByName(string name)
+        {
+            return await _context.Institution.SingleOrDefaultAsync(x => x.Name == name);
         }
 
         public async Task<IList<Institution>> GetAllAsync()
@@ -42,7 +53,7 @@ namespace Charity.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var institution = _context.Institution.SingleOrDefault(x => x.ID == id);
+            var institution = _context.Institution.SingleOrDefault(x => x.Id == id);
             if (institution == null) return false;
 
             _context.Institution.Remove(institution);

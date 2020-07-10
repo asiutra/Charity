@@ -8,8 +8,7 @@ namespace Charity.Models.Db
 {
     public class Category
     {
-        public int ID { get; set; }
-        [Required]
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

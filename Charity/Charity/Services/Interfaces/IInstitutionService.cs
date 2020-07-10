@@ -10,6 +10,8 @@ namespace Charity.Services.Interfaces
     {
         Task<bool> CreateAsync(Institution institution);
         Task<Institution> GetAsync(int id);
+        Task<int> GetAsyncId(string name);
+        Task<Institution> GetAsyncByName(string name);
         Task<IList<Institution>> GetAllAsync();
         Task<bool> UpdateAsync(Institution institution);
         Task<bool> DeleteAsync(int id);
