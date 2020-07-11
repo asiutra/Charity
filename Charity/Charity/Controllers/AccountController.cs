@@ -31,10 +31,14 @@ namespace Charity.Controllers
             if (!ModelState.IsValid)
                 return View(viewModel);
 
+            // trim white spaces
+            var name = viewModel.Name.Replace(" ", "");
+            var surname = viewModel.Surname.Replace(" ","");
+
             var user = new IdentityUser
             {
                 Email = viewModel.Email,
-                UserName = viewModel.Email
+                UserName = name + " " + surname
             };
 
             var result = await UserManager.CreateAsync(user, viewModel.Password);
@@ -58,7 +62,8 @@ namespace Charity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await SignInManager.PasswordSignInAsync(viewModel.Email, viewModel.Password, false, false);
+                var user = await UserManager.FindByEmailAsync(viewModel.Email);
+                var result = await SignInManager.PasswordSignInAsync(user, viewModel.Password, false, false);
 
                 if (result.Succeeded)
                     return RedirectToAction("Index", "Home");
