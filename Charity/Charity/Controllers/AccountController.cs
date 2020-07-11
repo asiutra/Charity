@@ -12,11 +12,13 @@ namespace Charity.Controllers
     {
         protected UserManager<IdentityUser> UserManager { get; }
         protected SignInManager<IdentityUser> SignInManager { get; }
+        protected RoleManager<IdentityRole> RoleManager { get; }
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
         }
 
         [HttpGet]
@@ -45,6 +47,15 @@ namespace Charity.Controllers
 
             if (result.Succeeded)
             {
+                // Create and add to role - as a default all new user assign to User role
+                // TODO: Allow to manage roles by admin users
+                if (!RoleManager.RoleExistsAsync("User").Result)
+                {
+                    var ir = new IdentityRole("User");
+                    await RoleManager.CreateAsync(ir);
+                }
+                await UserManager.AddToRoleAsync(user, "User");
+
                 await SignInManager.SignInAsync(user, false);
             }
 
