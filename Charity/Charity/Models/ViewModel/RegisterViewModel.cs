@@ -8,6 +8,10 @@ namespace Charity.Models.ViewModel
 {
     public class RegisterViewModel
     {
+        [Required(ErrorMessage = "Wprowadź swoje imię")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "Wprowadź swoje nazwisko")]
+        public string Surname { get; set; }
         [Required(ErrorMessage = "Wprowadź adres email"), EmailAddress(ErrorMessage = "Niepoprawny adres email")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Wprowadź hasło")]
