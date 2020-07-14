@@ -142,14 +142,18 @@ else if (handlingController == "Home" && handlingMethod == "Index")
                 </ul>
             }
 
-            <ul>
-                <li><a asp-controller="Home" asp-action="Index" class="btn btn--without-border active">Start</a></li>
-                <li><a href="#steps" class="btn btn--without-border">O co chodzi?</a></li>
-                <li><a href="#about-us" class="btn btn--without-border">O nas</a></li>
-                <li><a href="#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
-                <li><a asp-controller="Donation" asp-action="Donate" class="btn btn--without-border">Przekaż dary</a></li>
-                <li><a href="#contact" class="btn btn--without-border">Kontakt</a></li>
-            </ul>
+        <ul>
+            @if (User.IsInRole("Admin"))
+            {
+                <li><a asp-controller="Admin" asp-action="ShowUsers" class="btn btn--without-border active">ShowUsers</a></li>
+            }
+            <li><a asp-controller="Home" asp-action="Index" class="btn btn--without-border active">Start</a></li>
+            <li><a href="#steps" class="btn btn--without-border">O co chodzi?</a></li>
+            <li><a href="#about-us" class="btn btn--without-border">O nas</a></li>
+            <li><a href="#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
+            <li><a asp-controller="Donation" asp-action="Donate" class="btn btn--without-border">Przekaż dary</a></li>
+            <li><a href="#contact" class="btn btn--without-border">Kontakt</a></li>
+        </ul>
         </nav>
 
         <div class="slogan container container--90">
@@ -189,6 +193,42 @@ else if (handlingController == "Account" && handlingMethod == "Register" || hand
             </ul>
 
             <ul>
+                <li><a asp-controller="Home" asp-action="Index" class="btn btn--without-border active">Start</a></li>
+                <li><a href="#steps" class="btn btn--without-border">O co chodzi?</a></li>
+                <li><a href="#about-us" class="btn btn--without-border">O nas</a></li>
+                <li><a href="#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
+                <li><a asp-controller="Donation" asp-action="Donate" class="btn btn--without-border">Przekaż dary</a></li>
+                <li><a href="#contact" class="btn btn--without-border">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+}
+
+
+@*Header for Admins*@
+else if (handlingController == "Admin")
+{
+    <header>
+        <nav class="container container--70">
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <ul class="nav--actions">
+                    <li class="logged-user">
+                        Witaj @User.Identity.Name
+                        <ul class="dropdown">
+                            <li><a href="#">Profil</a></li>
+                            <li><a href="#">Ustawienia</a></li>
+                            <li><a href="#">Moje zbiórki</a></li>
+                            <li><a asp-controller="Account" asp-action="Logout">Wyloguj</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            }
+
+            
+            <ul>
+                <li><a href="" class="btn btn--without-border active">SomeAdminAction...</a></li>
                 <li><a asp-controller="Home" asp-action="Index" class="btn btn--without-border active">Start</a></li>
                 <li><a href="#steps" class="btn btn--without-border">O co chodzi?</a></li>
                 <li><a href="#about-us" class="btn btn--without-border">O nas</a></li>
