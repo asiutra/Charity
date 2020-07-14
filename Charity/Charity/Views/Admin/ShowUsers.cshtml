@@ -1,0 +1,40 @@
+﻿@model IList<IdentityUser>
+@{
+    ViewBag.Title = "Users";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <table class="table table table-hover h4">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Full User Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @for (int i = 0; i < @Model.Count; i++)
+            {
+                <tr>
+                    <td scope="col" class="font-weight-bold">@i</td>
+                    <td>@Model[i].UserName</td>
+                    <td>@Model[i].Email</td>
+                    <td>
+                        @if (Model[i].LockoutEnabled && Model[i].LockoutEnd != null)
+                        {
+                            <a asp-action="Unlock" asp-controller="Admin" asp-route-id="@Model[i].Id">Odblokuj</a>
+
+                        }
+                        else
+                        {
+                            <a asp-action="Lock" asp-controller="Admin" asp-route-id="@Model[i].Id">Zablokuj</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

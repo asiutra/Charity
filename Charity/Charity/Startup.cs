@@ -33,7 +33,8 @@ namespace Charity
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
 
             services.AddDbContext<CharityContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("SQL")));
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CharityContext>();
@@ -53,6 +54,7 @@ namespace Charity
             services.AddScoped<IInstitutionService, InstitutionService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IDonationService, DonationService>();
+            services.AddScoped<IAdminService, AdminService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
