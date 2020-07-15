@@ -145,7 +145,8 @@ else if (handlingController == "Home" && handlingMethod == "Index")
         <ul>
             @if (User.IsInRole("Admin"))
             {
-                <li><a asp-controller="Admin" asp-action="ShowUsers" class="btn btn--without-border active">ShowUsers</a></li>
+                <li><a asp-controller="Admin" asp-action="ShowUsers" class="btn btn--without-border active">Users</a></li>
+                <li><a asp-controller="Admin" asp-action="ShowInstitution" class="btn btn--without-border active">Institutions</a></li>
             }
             <li><a asp-controller="Home" asp-action="Index" class="btn btn--without-border active">Start</a></li>
             <li><a href="#steps" class="btn btn--without-border">O co chodzi?</a></li>

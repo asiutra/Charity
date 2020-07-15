@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Charity.Models.Db;
 
 namespace Charity.Services.Interfaces
 {
     public interface IAdminService
     {
-        Task<bool> LockUser(string id);
-        Task<bool> UnlockUser(string id);
+        Task<bool> LockUserAsync(string id);
+        Task<bool> UnlockUserAsync(string id);
     }
 }
