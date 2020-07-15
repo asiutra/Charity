@@ -1,0 +1,32 @@
+﻿@model IList<Institution>
+@{
+    ViewBag.Title = "Instituion";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid" style="margin: 5% 0 5% 0">
+    <table class="table table table-hover h4">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nazwa instytucji</th>
+            <th scope="col">Opis</th>
+            <th scope="col">Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var institution in Model)
+        {
+            <tr>
+                <td scope="col" class="font-italic">@institution.Id</td>
+                <td>@institution.Name</td>
+                <td>@institution.Description</td>
+                <td>
+                    <a asp-controller="Admin" asp-action="EditInstitution" asp-route-id="@institution.Id">Edytuj</a>
+                    <a asp-controller="Admin" asp-action="" asp-route-id="@institution.Id">Usuń</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

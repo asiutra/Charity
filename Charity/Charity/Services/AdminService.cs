@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Charity.Context;
+using Charity.Models.Db;
 using Charity.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Charity.Services
 {
@@ -16,7 +18,7 @@ namespace Charity.Services
             _context = context;
         }
 
-        public async Task<bool> LockUser(string id)
+        public async Task<bool> LockUserAsync(string id)
         {
             var user = _context.Users.Find(id);
             if (user == null) return false;
@@ -25,7 +27,7 @@ namespace Charity.Services
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> UnlockUser(string id)
+        public async Task<bool> UnlockUserAsync(string id)
         {
             var user = _context.Users.Find(id);
             if (user == null) return false;

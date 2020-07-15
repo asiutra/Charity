@@ -1615,6 +1615,21 @@ footer .bottom-line--icons a img {
   margin: 50px 0;
 }
 
+.edit-page {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 35px;
+    margin: 50px 0;
+}
+
 /* line 26, scss/style.scss */
 .login-page form {
   max-width: 580px;
