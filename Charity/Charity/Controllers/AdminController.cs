@@ -11,8 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Charity.Controllers
 {
-    // Controller will be for lock/unlock/show our users
-    // Controller available only for Admin
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
@@ -28,7 +26,6 @@ namespace Charity.Controllers
         }
 
 
-        //[HttpGet]
         public async Task<IActionResult> ShowUsers()
         {
             var users = await UserManager.GetUsersInRoleAsync("User");
@@ -49,8 +46,7 @@ namespace Charity.Controllers
 
         public async Task<IActionResult> ShowInstitution()
         {
-            //var institution = await AdminService.GetInstitutionListAsync(); // pobierać z InstitutionService.GetAllAsync
-            var institution = await InstitutionService.GetAllAsync(); // pobierać z InstitutionService.GetAllAsync
+            var institution = await InstitutionService.GetAllAsync();
             return View(institution);
         }
 
@@ -80,14 +76,12 @@ namespace Charity.Controllers
                 Description = viewModel.Description
             };
 
-            var inst = institution;
-
-            //var result = await InstitutionService.UpdateAsync(institution);
-            //if (result == false)
-            //{
-            //    ModelState.AddModelError("", "Błąd edycji instytucji");
-            //    return View(viewModel);
-            //}
+            var result = await InstitutionService.UpdateAsync(institution);
+            if (result == false)
+            {
+                ModelState.AddModelError("", "Błąd edycji instytucji");
+                return View(viewModel);
+            }
 
             return RedirectToAction("ShowInstitution", "Admin");
         }

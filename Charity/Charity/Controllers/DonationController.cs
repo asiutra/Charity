@@ -69,6 +69,7 @@ namespace Charity.Controllers
         [HttpPost]
         public async Task<IActionResult> Donate(DonationViewModel viewModel)
         {
+            // checking modelState Errors
             var errors = ModelState
                 .Where(x => x.Value.Errors.Count > 0)
                 .Select(x => new { x.Key, x.Value.Errors })
@@ -87,12 +88,12 @@ namespace Charity.Controllers
             }
 
             //Handle for registered and logged user
-            //var user = _userManager.GetUserAsync(User);
-            //if (user == null)
-            //{
-            //    ModelState.AddModelError("", "Błąd w tworzenia darowizny");
-            //    return View(viewModel);
-            //}
+            var user = _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Błąd w tworzenia darowizny");
+                return View(viewModel);
+            }
 
 
             var donation = new Donation()
