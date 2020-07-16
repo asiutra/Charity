@@ -1,0 +1,21 @@
+﻿@model AddInstitutionViewModel
+@{
+    ViewBag.Title = "Add institution";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid" style="margin: 5% 0 5% 0">
+    <h2>Dodaj nową instytucję</h2>
+    <form asp-controller="Admin" asp-action="AddInstitution" method="post">
+
+        <div class="my-form-group">
+            <input class="my-form-control" type="text" asp-for="Name" placeholder="Nazwa instytucji"/>
+            <span asp-validation-for="Name"></span><br />
+            <input class="my-form-control" type="text" asp-for="Description" placeholder="Opis instytucji"/>
+            <span asp-validation-for="Description"></span><br /><br />
+            <button class="btn btn-outline-secondary" type="submit">Dodaj</button>
+            <a class="btn btn-outline-secondary" asp-controller="Admin" asp-action="ShowInstitution">Anuluj</a>
+        </div>
+
+    </form>
+</div>
