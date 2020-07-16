@@ -522,6 +522,36 @@ form {
       flex-wrap: wrap;
 }
 
+/* own definition */
+myform {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+form .my-form-group {
+    width: 100%;
+    padding: 50px 30%;
+    margin-bottom: 1px;
+}
+
+.my-form-control {
+    display: block;
+    width: 100%;
+    height: calc(2.25rem + 2px);
+    padding: 2rem 0.75rem;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
 /* line 5, scss/modules/_forms.scss */
 form .form-group {
   width: 100%;
@@ -1613,6 +1643,25 @@ footer .bottom-line--icons a img {
           align-items: center;
   padding: 0 15px;
   margin: 50px 0;
+}
+
+.editpage {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 30px 35px;
+    margin: 180px 900px;
+}
+
+.myformgroup {
+    width: 1000%
 }
 
 /* line 26, scss/style.scss */
