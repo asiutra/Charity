@@ -85,5 +85,39 @@ namespace Charity.Controllers
 
             return RedirectToAction("ShowInstitution", "Admin");
         }
+
+        [HttpGet]
+        public IActionResult AddInstitution()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddInstitution(AddInstitutionViewModel viewModel)
+        {
+            if (!ModelState.IsValid) return View(viewModel);
+
+            var institution = new Institution()
+            {
+                Name = viewModel.Name,
+                Description = viewModel.Description
+            };
+
+            var result = await InstitutionService.CreateAsync(institution);
+
+            if (result == false)
+            {
+                ModelState.AddModelError("", "Nie można dodać nowej instytucji");
+                return View(viewModel);
+            }
+
+            return RedirectToAction("ShowInstitution", "Admin");
+        }
+
+        public async Task<IActionResult> RemoveInstitution(int id)
+        {
+            await InstitutionService.DeleteAsync(id);
+            return RedirectToAction("ShowInstitution", "Admin");
+        }
     }
 }
