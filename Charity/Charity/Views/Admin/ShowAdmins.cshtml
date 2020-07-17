@@ -1,0 +1,36 @@
+﻿@model IList<IdentityUser>
+@{
+    ViewBag.Title = "Instituion";
+    Layout = "_Layout";
+}
+
+
+
+<div class="container-fluid" style="margin: 5% 0 5% 0">
+    <a class="btn btn-outline-secondary" asp-controller="Admin" asp-action="AddAdmin">Dodaj</a><br /><br />
+    <table class="table table table-hover h4">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Email</th>
+                <th scope="col">Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td scope="col" class="font-italic">@i</td>
+                    <td>@Model[i].UserName</td>
+                    <td>@Model[i].Email</td>
+                    <td>
+                        <a href="#">Edytuj</a>
+                        <a href="#" onclick="return confirm('Czy chcesz usunąć instytucję?')">Usuń</a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

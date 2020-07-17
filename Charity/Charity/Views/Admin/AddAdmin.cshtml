@@ -1,0 +1,26 @@
+﻿@model AddAdminViewModel
+@{
+    ViewBag.Title = "Add new admin";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid" style="margin: 5% 0 5% 0">
+    <h2>Dodaj nowego admina</h2>
+    <form asp-controller="Admin" asp-action="AddAdmin" method="post">
+
+        <div class="my-form-group">
+            <input class="my-form-control" type="text" asp-for="Name" placeholder="Imię nowego admina" />
+            <span asp-validation-for="Name"></span><br />
+            <input class="my-form-control" type="text" asp-for="Surname" placeholder="Nazwisko nowego admina" />
+            <span asp-validation-for="Name"></span><br />
+            <input class="my-form-control" type="email" asp-for="Email" placeholder="Email nowego admina" />
+            <span asp-validation-for="Email"></span><br/>
+            <input class="my-form-control" type="text" asp-for="Password" placeholder="Hasło nowego admina" />
+            <span asp-validation-for="Password"></span><br/><br/>
+
+            <button class="btn btn-outline-secondary" type="submit">Dodaj</button>
+            <a class="btn btn-outline-secondary" asp-controller="Admin" asp-action="ShowAdmins">Anuluj</a>
+        </div>
+
+    </form>
+</div>
