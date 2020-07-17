@@ -156,5 +156,59 @@ namespace Charity.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditAdmin(string id)
+        {
+            var superUserId = "777bfd55-65f0-45a0-aaac-6f12406e9eea";
+            if (id == superUserId)
+            {
+                ModelState.AddModelError("", "Usunięcie użytkownika \"SuperUser\" jest nie możliwe, \nspróbuj usunąć innego użytkownika.");
+                return RedirectToAction("ShowAdmins", "Admin");
+            }
+
+            var admin = await UserManager.FindByIdAsync(id);
+
+            var adminToEdit = new EditAdminViewModel()
+            {
+                Id = admin.Id,
+                UserName = admin.UserName,
+                Email = admin.Email,
+            };
+
+            return View(adminToEdit);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditAdmin(EditAdminViewModel viewModel)
+        {
+            if (!ModelState.IsValid) return View(viewModel);
+
+            var admin = await UserManager.FindByIdAsync(viewModel.Id);
+            admin.UserName = viewModel.UserName;
+            admin.Email = viewModel.Email;
+
+            var result = await UserManager.UpdateAsync(admin);
+
+            if (result.Succeeded) return RedirectToAction("ShowAdmins", "Admin");
+
+            ModelState.AddModelError("", "Błąd edycji admina");
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> RemoveAdmin(string id)
+        {
+            var superUserId = "777bfd55-65f0-45a0-aaac-6f12406e9eea";
+
+            if (id == superUserId)
+            {
+                ModelState.AddModelError("", "Usunięcie użytkownika \"SuperUser\" jest nie możliwe, \nspróbuj usunąć innego użytkownika.");
+                return RedirectToAction("ShowAdmins", "Admin");
+            }
+
+            var user = await UserManager.FindByIdAsync(id);
+            await UserManager.DeleteAsync(user);
+            return RedirectToAction("ShowAdmins", "Admin");
+        }
+
     }
 }

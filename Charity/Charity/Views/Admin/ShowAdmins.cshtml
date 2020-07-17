@@ -10,27 +10,28 @@
     <a class="btn btn-outline-secondary" asp-controller="Admin" asp-action="AddAdmin">Dodaj</a><br /><br />
     <table class="table table table-hover h4">
         <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nazwa</th>
-                <th scope="col">Email</th>
-                <th scope="col">Akcje</th>
-            </tr>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nazwa</th>
+            <th scope="col">Email</th>
+            <th scope="col">Akcje</th>
+        </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.Count; i++)
-            {
-                <tr>
-                    <td scope="col" class="font-italic">@i</td>
-                    <td>@Model[i].UserName</td>
-                    <td>@Model[i].Email</td>
-                    <td>
-                        <a href="#">Edytuj</a>
-                        <a href="#" onclick="return confirm('Czy chcesz usunąć instytucję?')">Usuń</a>
-                    </td>
-                </tr>
-            }
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td scope="col" class="font-italic">@i</td>
+                <td>@Model[i].UserName</td>
+                <td>@Model[i].Email</td>
+                <td>
+                    <a asp-controller="Admin" asp-action="EditAdmin" asp-route-id="@Model[i].Id">Edytuj</a> 
+                    <a asp-controller="Admin" asp-action="RemoveAdmin" asp-route-id="@Model[i].Id" onclick="return confirm('Czy chcesz usunąć admina?')">Usuń</a>
+                </td>
+            </tr>
+        }
 
         </tbody>
     </table>
+    <div asp-validation-summary="All"></div>
 </div>
