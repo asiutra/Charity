@@ -1,0 +1,22 @@
+﻿@model EditAdminViewModel
+@{
+    ViewBag.Title = "Edit Admin";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid" style="margin: 5% 0 5% 0">
+    <h2>Edycja danych admina</h2>
+    <form asp-controller="Admin" asp-action="EditAdmin" method="post">
+
+        <div class="my-form-group">
+            <input class="my-form-control" type="text" asp-for="UserName" placeholder="Nazwa admina (imię i nazwisko)" />
+            <span asp-validation-for="UserName"></span><br />
+            <input class="my-form-control" type="email" asp-for="Email" placeholder="Email admina" />
+            <span asp-validation-for="Email"></span><br /><br />
+            <button class="btn btn-outline-secondary" type="submit">Zapisz</button>
+            <a class="btn btn-outline-secondary" asp-controller="Admin" asp-action="ShowAdmins">Anuluj</a>
+        </div>
+
+    </form>
+</div>
+
