@@ -142,19 +142,20 @@ else if (handlingController == "Home" && handlingMethod == "Index")
                 </ul>
             }
 
-        <ul>
-            @if (User.IsInRole("Admin"))
-            {
-                <li><a asp-controller="Admin" asp-action="ShowUsers" class="btn btn--without-border active">Users</a></li>
-                <li><a asp-controller="Admin" asp-action="ShowInstitution" class="btn btn--without-border active">Institutions</a></li>
-            }
-            <li><a asp-controller="Home" asp-action="Index" class="btn btn--without-border active">Start</a></li>
-            <li><a href="#steps" class="btn btn--without-border">O co chodzi?</a></li>
-            <li><a href="#about-us" class="btn btn--without-border">O nas</a></li>
-            <li><a href="#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
-            <li><a asp-controller="Donation" asp-action="Donate" class="btn btn--without-border">Przekaż dary</a></li>
-            <li><a href="#contact" class="btn btn--without-border">Kontakt</a></li>
-        </ul>
+            <ul>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li><a asp-controller="Admin" asp-action="ShowUsers" class="btn btn--without-border active">Users</a></li>
+                    <li><a asp-controller="Admin" asp-action="ShowAdmins" class="btn btn--without-border active">Admins</a></li>
+                    <li><a asp-controller="Admin" asp-action="ShowInstitution" class="btn btn--without-border active">Institutions</a></li>
+                }
+                <li><a asp-controller="Home" asp-action="Index" class="btn btn--without-border active">Start</a></li>
+                <li><a href="#steps" class="btn btn--without-border">O co chodzi?</a></li>
+                <li><a href="#about-us" class="btn btn--without-border">O nas</a></li>
+                <li><a href="#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
+                <li><a asp-controller="Donation" asp-action="Donate" class="btn btn--without-border">Przekaż dary</a></li>
+                <li><a href="#contact" class="btn btn--without-border">Kontakt</a></li>
+            </ul>
         </nav>
 
         <div class="slogan container container--90">
@@ -227,7 +228,7 @@ else if (handlingController == "Admin")
                 </ul>
             }
 
-            
+
             <ul>
                 <li><a href="" class="btn btn--without-border active">SomeAdminAction...</a></li>
                 <li><a asp-controller="Home" asp-action="Index" class="btn btn--without-border active">Start</a></li>

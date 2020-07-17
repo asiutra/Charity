@@ -8,6 +8,7 @@ using Charity.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Charity.Controllers
 {
@@ -119,5 +120,41 @@ namespace Charity.Controllers
             await InstitutionService.DeleteAsync(id);
             return RedirectToAction("ShowInstitution", "Admin");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowAdmins()
+        {
+            var adminList = await UserManager.GetUsersInRoleAsync("Admin");
+            return View(adminList);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddAdmin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddAdmin(AddAdminViewModel viewModel)
+        {
+            if (!ModelState.IsValid) return View(viewModel);
+
+            var fullName = $"{viewModel.Name} {viewModel.Surname}";
+
+            var admin = new IdentityUser()
+            {
+                UserName = fullName,
+                Email = viewModel.Email
+            };
+
+            var result = await UserManager.CreateAsync(admin, viewModel.Password);
+
+            if (!result.Succeeded) return View(viewModel);
+
+            await UserManager.AddToRoleAsync(admin, "Admin");
+            return RedirectToAction("ShowAdmins", "Admin");
+
+        }
+
     }
 }
