@@ -45,6 +45,46 @@ namespace Charity.Controllers
             return RedirectToAction("ShowUsers");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+
+            var userToEdit = new UserEditViewModel()
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email
+            };
+
+            return View(userToEdit);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(UserEditViewModel viewModel)
+        {
+            if (!ModelState.IsValid) return View(viewModel);
+
+            var user = await UserManager.FindByIdAsync(viewModel.Id);
+            user.UserName = viewModel.UserName;
+            user.Email = viewModel.Email;
+
+            var result = await UserManager.UpdateAsync(user);
+
+            if (result.Succeeded) return RedirectToAction("ShowUsers", "Admin");
+
+            ModelState.AddModelError("", "Błąd edycji użytkownika");
+            return View(viewModel);
+        }
+
+
+        public async Task<IActionResult> RemoveUser(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            await UserManager.DeleteAsync(user);
+            return RedirectToAction("ShowUsers", "Admin");
+        }
+
         public async Task<IActionResult> ShowInstitution()
         {
             var institution = await InstitutionService.GetAllAsync();

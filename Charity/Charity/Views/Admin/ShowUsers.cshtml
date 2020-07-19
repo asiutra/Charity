@@ -32,6 +32,8 @@
                         {
                             <a asp-action="Lock" asp-controller="Admin" asp-route-id="@Model[i].Id">Zablokuj</a>
                         }
+                        <a asp-action="EditUser" asp-controller="Admin" asp-route-id="@Model[i].Id">Edytuj</a>
+                        <a asp-controller="Admin" asp-action="RemoveUser" asp-route-id="@Model[i].Id" onclick="return confirm('Czy chcesz usunąć użytkownika?')">Usuń</a>
                     </td>
                 </tr>
             }
