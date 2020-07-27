@@ -55,6 +55,7 @@ namespace Charity
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IDonationService, DonationService>();
             services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IEmailService, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
