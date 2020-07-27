@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Charity.Models.ViewModel;
+using Charity.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,12 +14,14 @@ namespace Charity.Controllers
         protected UserManager<IdentityUser> UserManager { get; }
         protected SignInManager<IdentityUser> SignInManager { get; }
         protected RoleManager<IdentityRole> RoleManager { get; }
+        protected IEmailService EmailService;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
         {
             UserManager = userManager;
             SignInManager = signInManager;
             RoleManager = roleManager;
+            EmailService = emailService;
         }
 
         [HttpGet]
@@ -35,7 +38,7 @@ namespace Charity.Controllers
 
             // trim white spaces
             var name = viewModel.Name.Replace(" ", "");
-            var surname = viewModel.Surname.Replace(" ","");
+            var surname = viewModel.Surname.Replace(" ", "");
 
             var user = new IdentityUser
             {
@@ -54,9 +57,10 @@ namespace Charity.Controllers
                     var ir = new IdentityRole("User");
                     await RoleManager.CreateAsync(ir);
                 }
-                await UserManager.AddToRoleAsync(user, "User");
 
+                await UserManager.AddToRoleAsync(user, "User");
                 await SignInManager.SignInAsync(user, false);
+                await EmailService.SendEmailAsync(viewModel.Email); 
             }
 
             return RedirectToAction("Index", "Home");
