@@ -57,7 +57,7 @@ namespace Charity.Services
             {
                 using (var message = new MailMessage("charit1.projekt@gmail.com", mailTo)
             {
-                Subject = $"Witamy na pokładzie - {mailTo}",
+                Subject = $"Wiadomość od klienta!",
                 Body = content
             })
             {
