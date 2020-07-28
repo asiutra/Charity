@@ -8,6 +8,7 @@
 <section class="login-page">
     <h2>Załóż konto</h2>
     <form asp-controller="Account" asp-action="Register" method="post">
+        <div class="form-group" asp-validation-summary="All"></div>
         <div class="form-group">
             <input type="text" asp-for="Name" placeholder="Imie" />
             <span asp-validation-for="Name"></span>
@@ -34,4 +35,5 @@
             <button class="btn" type="submit">Załóż konto</button>
         </div>
     </form>
+    
 </section>

@@ -36,6 +36,16 @@ namespace Charity.Controllers
             if (!ModelState.IsValid)
                 return View(viewModel);
 
+
+            //quickFix for exist email
+            var checkEmail = await UserManager.FindByEmailAsync(viewModel.Email);
+            if (checkEmail != null)
+            {
+                ModelState.AddModelError("", "Podany adres emali już istnieje!");
+                return View(viewModel);
+            }
+           
+
             // trim white spaces
             var name = viewModel.Name.Replace(" ", "");
             var surname = viewModel.Surname.Replace(" ", "");
@@ -45,6 +55,7 @@ namespace Charity.Controllers
                 Email = viewModel.Email,
                 UserName = name + " " + surname
             };
+
 
             var result = await UserManager.CreateAsync(user, viewModel.Password);
 
@@ -60,7 +71,7 @@ namespace Charity.Controllers
 
                 await UserManager.AddToRoleAsync(user, "User");
                 await SignInManager.SignInAsync(user, false);
-                await EmailService.SendEmailAsync(viewModel.Email); 
+                await EmailService.SendEmailAsync(viewModel.Email);
             }
 
             return RedirectToAction("Index", "Home");
