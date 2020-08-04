@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Charity.Context;
 using Charity.Models.Db;
 using Charity.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Charity.Services
@@ -57,6 +59,17 @@ namespace Charity.Services
         public async Task<int> SumOfAllQuantity()
         {
             return await _context.Donation.SumAsync(x => x.Quantity);
+        }
+
+        public async Task<IList<DonationCategory>> DonationCategory()
+        {
+            return await _context.DonationCategory.ToListAsync();
+        }
+
+        public async Task<int> DonationId(IdentityUser userPrincipal)
+        {
+            //return await _context.Donation.SingleOrDefaultAsync(x => x.User == userPrincipal);
+            return await _context.Donation.Where(x => x.User == userPrincipal).Select(x => x.Id).SingleOrDefaultAsync();
         }
     }
 }
