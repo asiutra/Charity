@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Charity.Models.Db;
+using Microsoft.AspNetCore.Identity;
 
 namespace Charity.Services.Interfaces
 {
@@ -15,5 +16,7 @@ namespace Charity.Services.Interfaces
         Task<bool> DeleteAsync(int id);
         Task<int> CountInstitution();
         Task<int> SumOfAllQuantity();
+        Task<IList<DonationCategory>> DonationCategory();
+        Task<int> DonationId(IdentityUser userPrincipal);
     }
 }

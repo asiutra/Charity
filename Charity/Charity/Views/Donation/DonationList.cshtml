@@ -1,0 +1,60 @@
+﻿@model List<Donation>
+@{
+    ViewBag.Title = "Moja lista darów!";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid" style="margin: 5% 0 5% 0">
+    @*<a class="btn btn-outline-secondary" asp-controller="Admin" asp-action="AddInstitution">Dodaj</a><br /><br />*@
+    <table class="table table table-hover h4">
+        <thead>
+            <tr>
+                <th scope="col">Imię i nazwisko</th>
+                <th scope="col">Adres z którego kurier odbierze/odebrał datek</th>
+                <th scope="col">Wybrane kategorie</th>
+                <th scope="col">Wybrane instytucja</th>
+                <th scope="col">Ilość worków</th>
+                <th scope="col">Data i dzień odbioru</th>
+                <th scope="col">Godzna odbioru</th>
+                <th scope="col">Czy odebrane?</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var donation in Model)
+            {
+                <tr>
+                    <td>@donation.User</td>
+                    <td>
+                        @donation.City
+                        @donation.ZipCode
+                        @donation.Street
+                    </td>
+                    <td>
+                        @foreach (var categories in donation.Categories)
+                        {
+                            var id = categories.CategoryId;
+                            @ViewBag.CategoryName[id - 1].Name<br />
+                        }
+                    </td>
+                    <td>@donation.Institution.Name</td>
+                    <td>@donation.Quantity</td>
+                    <td>@donation.PickUpDate.ToString("dd MMMM yyyy - dddd")</td>
+                    <td>@donation.PickUpTime.ToString("t")</td>
+                    <td>
+                        @{
+                            if (donation.PickUpDate <= DateTime.Now &&
+                                donation.PickUpTime <= DateTime.Now)
+                            {
+                                <strong>Tak</strong>
+                            }
+                            else
+                            {
+                                <strong>Nie</strong>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

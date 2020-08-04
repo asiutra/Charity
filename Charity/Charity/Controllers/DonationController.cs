@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Charity.Context;
 using Charity.Models.Db;
 using Charity.Models.Form;
 using Charity.Models.ViewModel;
 using Charity.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -84,11 +86,11 @@ namespace Charity.Controllers
 
             foreach (var category in categories)
             {
-                categoriesList.Add(new DonationCategory {CategoryId = category.id, DonationId = viewModel.Id});
+                categoriesList.Add(new DonationCategory { CategoryId = category.id, DonationId = viewModel.Id });
             }
 
             //Handle for registered and logged user
-            var user = _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 ModelState.AddModelError("", "Błąd w tworzenia darowizny");
@@ -108,6 +110,7 @@ namespace Charity.Controllers
                 PickUpComment = viewModel.PickUpComment,
                 Categories = categoriesList,
                 Institution = await _institutionService.GetAsync(viewModel.Institution.Id),
+                User = await _userManager.GetUserAsync(User)
             };
 
             var result = await _donationService.CreateAsync(donation);
@@ -125,6 +128,25 @@ namespace Charity.Controllers
         public async Task<IActionResult> Confirmation()
         {
             return View();
+        }
+
+        [HttpGet, Authorize]
+        public async Task<IActionResult> DonationList()
+        {
+            //helpList - help for donationList & institutionList for getting their names, without this we have an empty lists
+            var helpList = await _donationService.DonationCategory();
+            var helpList2 = await _institutionService.GetAllAsync();
+
+            var donationList = await _donationService.GetAllAsync(); 
+            var currentUser = await _userManager.GetUserAsync(User); 
+            var specificUserDonation = donationList.OrderBy(d => d.PickUpDate)
+                .Where(x => x.User == currentUser).ToList(); //donationId 9 10 11 - DONATION LIST ID
+
+            //ViewBag with CategoriesName
+            var categoryName = await _categoryService.GetAllAsync();
+            ViewBag.CategoryName = categoryName.ToList();
+
+            return View(specificUserDonation);
         }
 
     }
