@@ -55,14 +55,26 @@ namespace Charity.Services
             }
             else
             {
+                if (mailTo == "charit1.projekt@gmail.com")
+                {
+                    using (var message = new MailMessage("charit1.projekt@gmail.com", mailTo)
+                    {
+                        Subject = $"Wiadomość od klienta!",
+                        Body = content
+                    })
+                    {
+                        await smtpClient.SendMailAsync(message);
+                    }
+                }
+                
                 using (var message = new MailMessage("charit1.projekt@gmail.com", mailTo)
-            {
-                Subject = $"Wiadomość od klienta!",
-                Body = content
-            })
-            {
-                await smtpClient.SendMailAsync(message);
-            }
+                {
+                    Subject = $"Potwierdź swoją rejestrację!",
+                    Body = content
+                })
+                {
+                    await smtpClient.SendMailAsync(message);
+                }
             }
         }
     }

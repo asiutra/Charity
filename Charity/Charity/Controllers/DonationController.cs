@@ -130,7 +130,7 @@ namespace Charity.Controllers
             return View();
         }
 
-        [HttpGet, Authorize]
+        [HttpGet, Authorize, RequireHttps]
         public async Task<IActionResult> DonationList()
         {
             //helpList - help for donationList & institutionList for getting their names, without this we have an empty lists

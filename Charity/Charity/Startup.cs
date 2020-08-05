@@ -37,8 +37,8 @@ namespace Charity
                 AddRazorRuntimeCompilation();
 
             services.AddDbContext<CharityContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("SQL")));
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CharityContext>();
-            
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CharityContext>().AddDefaultTokenProviders();
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password and userName rules
@@ -48,6 +48,7 @@ namespace Charity
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
+                options.SignIn.RequireConfirmedEmail = true;
             });
 
             //Register all service
