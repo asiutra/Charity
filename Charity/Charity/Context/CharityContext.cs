@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Charity.Models.Db;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,7 @@ namespace Charity.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Seed();
             base.OnModelCreating(builder);
         }
 

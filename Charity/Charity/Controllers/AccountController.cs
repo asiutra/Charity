@@ -68,20 +68,30 @@ namespace Charity.Controllers
             if (result.Succeeded)
             {
                 var token = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-                var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new {token, email = user.Email},Request.Scheme);
+                var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { token, email = user.Email }, Request.Scheme);
                 var message = $"To jest Twój link do aktywacji konta, kliknij w niego:\n{confirmationLink}";
                 await EmailService.SendEmailAsync(user.Email, message);
 
 
                 // Create and add to role - as a default all new user assign to User role
                 // TODO: Allow to manage roles by admin users
-                if (!RoleManager.RoleExistsAsync("User").Result)
-                {
-                    var ir = new IdentityRole("User");
-                    await RoleManager.CreateAsync(ir);
-                }
+                //if (!RoleManager.RoleExistsAsync("User").Result)
+                //{
+                //    var ir = new IdentityRole("User");
+                //    await RoleManager.CreateAsync(ir);
+                //}
 
-                await UserManager.AddToRoleAsync(user, "User");
+                //Temp solution only for ensure that all users can test this app with admin and user credentials.
+                var adminList = await UserManager.GetUsersInRoleAsync("Admin");
+                if (adminList.Count == 0)
+                {
+                    await UserManager.AddToRoleAsync(user, "Admin");
+                }
+                else
+                {
+                    await UserManager.AddToRoleAsync(user, "User");
+                }
+                //await UserManager.AddToRoleAsync(user, "User");
                 //await SignInManager.SignInAsync(user, false);
                 //await EmailService.SendEmailAsync(viewModel.Email);
                 return RedirectToAction(nameof(SuccessRegistration));
@@ -100,6 +110,7 @@ namespace Charity.Controllers
             var result = await UserManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
                 return View(nameof(ConfirmEmail));
+
 
             return View("Error");
         }
