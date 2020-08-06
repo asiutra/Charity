@@ -70,7 +70,7 @@ namespace Charity.Controllers
                 var token = await UserManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { token, email = user.Email }, Request.Scheme);
                 var message = $"To jest Twój link do aktywacji konta, kliknij w niego:\n{confirmationLink}";
-                await EmailService.SendEmailAsync(user.Email, message);
+                await EmailService.SendEmailAsync(user.Email, "Link do aktywacji konta", message);
 
 
                 // Create and add to role - as a default all new user assign to User role
@@ -155,6 +155,78 @@ namespace Charity.Controllers
         {
             await SignInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            var user = await UserManager.FindByEmailAsync(viewModel.Email);
+            if (user == null)
+                return RedirectToAction("ForgotPasswordConfirmation"); // email was send for security reasons.
+
+            var token = await UserManager.GeneratePasswordResetTokenAsync(user);
+            var callback = Url.Action("ResetPassword", "Account", new {token, email = user.Email}, Request.Scheme);
+
+            var message = $"To jest Twój link do resetowania hasła, kliknij w niego:\n{callback}";
+            await EmailService.SendEmailAsync(viewModel.Email, "Link do resetowania hasła", message);
+
+            return RedirectToAction("ForgotPasswordConfirmation");
+        }
+
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            var model = new ResetPasswordViewModel
+            {
+                Token = token,
+                Email = email
+            };
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            var user = await UserManager.FindByEmailAsync(viewModel.Email);
+            if (user == null)
+                RedirectToAction("ResetPasswordConfirmation"); // redirect to confirmation for security.
+
+            var resetPassResult = await UserManager.ResetPasswordAsync(user, viewModel.Token, viewModel.Password);
+            if (!resetPassResult.Succeeded)
+            {
+                foreach (var error in resetPassResult.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+
+                return View();
+            }
+
+            return RedirectToAction("ResetPasswordConfirmation");
+        }
+
+        [HttpGet]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
         }
     }
 }

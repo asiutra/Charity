@@ -31,7 +31,7 @@ namespace Charity.Services
             }
         }
 
-        public async Task SendEmailAsync(string mailTo, string content)
+        public async Task SendEmailAsync(string mailTo, string subject, string content)
         {
             var smtpClient = new SmtpClient
             {
@@ -66,10 +66,10 @@ namespace Charity.Services
                         await smtpClient.SendMailAsync(message);
                     }
                 }
-                
+
                 using (var message = new MailMessage("charit1.projekt@gmail.com", mailTo)
                 {
-                    Subject = $"Potwierdź swoją rejestrację!",
+                    Subject = subject,
                     Body = content
                 })
                 {

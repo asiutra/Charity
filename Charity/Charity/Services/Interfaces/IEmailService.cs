@@ -8,6 +8,6 @@ namespace Charity.Services.Interfaces
     public interface IEmailService
     {
         Task SendEmailAsync(string mailTo);
-        Task SendEmailAsync(string mailTo, string content);
+        Task SendEmailAsync(string mailTo, string subject, string content);
     }
 }
