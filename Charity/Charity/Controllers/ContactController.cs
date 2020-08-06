@@ -35,7 +35,7 @@ namespace Charity.Controllers
             var mailTo = "charit1.projekt@gmail.com";
             var content = $"Wiadomość wysłana przez: {fullName}, emali: {email}\ntreść:\n\n{message}";
 
-            await EmailService.SendEmailAsync(mailTo, content);
+            await EmailService.SendEmailAsync(mailTo, "Nowa wiadomość od klienta", content);
 
             return RedirectToAction("Confirmation", "Contact");
         }

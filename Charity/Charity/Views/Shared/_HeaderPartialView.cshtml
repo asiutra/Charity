@@ -207,7 +207,7 @@ else if (handlingController == "Home" && handlingMethod == "Index")
     </header>
 }
 
-else if (handlingController == "Account" && handlingMethod == "Register" || handlingMethod == "Login")
+else if (handlingController == "Account" && handlingMethod == "Register" || handlingMethod == "Login" || handlingMethod == "ForgotPassword")
 {
     <header>
         <nav class="container container--70">
@@ -325,6 +325,94 @@ else if (handlingController == "Account" && handlingMethod == "SuccessRegistrati
         <div class="container" style="margin: 10% 0 10% 20%">
             <h2>
                 Please check your email for the verification action.
+            </h2>
+        </div>
+    </header>
+}
+else if (handlingController == "Account" && handlingMethod == "ForgotPasswordConfirmation")
+{
+    <header>
+        <nav class="container container--70">
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <ul class="nav--actions">
+                    <li class="logged-user">
+                        Witaj @User.Identity.Name
+                        <ul class="dropdown">
+                            <li><a asp-controller="User" asp-action="Edit">Edycja danych</a></li>
+                            <li><a href="#">Ustawienia</a></li>
+                            <li><a asp-controller="Donation" asp-action="DonationList">Moje zbiórki</a></li>
+                            <li><a asp-controller="Account" asp-action="Logout">Wyloguj</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <ul class="nav--actions">
+                    <li><a asp-controller="Account" asp-action="Login" class="btn btn--small btn--without-border">Zaloguj</a></li>
+                    <li><a asp-controller="Account" asp-action="Register" class="btn btn--small btn--highlighted">Załóż konto</a></li>
+                </ul>
+            }
+
+            <ul>
+                <li><a asp-controller="Home" asp-action="Index" class="btn btn--without-border active">Start</a></li>
+                <li><a href="#steps" class="btn btn--without-border">O co chodzi?</a></li>
+                <li><a href="#about-us" class="btn btn--without-border">O nas</a></li>
+                <li><a href="#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
+                <li><a asp-controller="Donation" asp-action="Donate" class="btn btn--without-border">Przekaż dary</a></li>
+                <li><a asp-controller="Contact" asp-action="ContactUs" class="btn btn--without-border">Kontakt</a></li>
+            </ul>
+        </nav>
+        <div class="container" style="margin: 10% 0 10% 20%">
+            <h2>
+                Link do resetowania hasła został wysłany. <br />
+                Proszę, sprawdź swoją pocztę a następnie kliknij w link <br />do resetowania hasła.
+            </h2>
+        </div>
+    </header>
+}
+else if (handlingController == "Account" && handlingMethod == "ResetPasswordConfirmation")
+{
+    <header>
+        <nav class="container container--70">
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <ul class="nav--actions">
+                    <li class="logged-user">
+                        Witaj @User.Identity.Name
+                        <ul class="dropdown">
+                            <li><a asp-controller="User" asp-action="Edit">Edycja danych</a></li>
+                            <li><a href="#">Ustawienia</a></li>
+                            <li><a asp-controller="Donation" asp-action="DonationList">Moje zbiórki</a></li>
+                            <li><a asp-controller="Account" asp-action="Logout">Wyloguj</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <ul class="nav--actions">
+                    <li><a asp-controller="Account" asp-action="Login" class="btn btn--small btn--without-border">Zaloguj</a></li>
+                    <li><a asp-controller="Account" asp-action="Register" class="btn btn--small btn--highlighted">Załóż konto</a></li>
+                </ul>
+            }
+
+            <ul>
+                <li><a asp-controller="Home" asp-action="Index" class="btn btn--without-border active">Start</a></li>
+                <li><a href="#steps" class="btn btn--without-border">O co chodzi?</a></li>
+                <li><a href="#about-us" class="btn btn--without-border">O nas</a></li>
+                <li><a href="#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
+                <li><a asp-controller="Donation" asp-action="Donate" class="btn btn--without-border">Przekaż dary</a></li>
+                <li><a asp-controller="Contact" asp-action="ContactUs" class="btn btn--without-border">Kontakt</a></li>
+            </ul>
+        </nav>
+        <div class="container" style="margin: 10% 0 10% 20%">
+            <h2>
+                Twoje hasło zostało zresetowane. <br />
+                Możesz teraz się zalogować - Kliknij <a asp-action="Login">tutaj</a> aby się zalogować.
             </h2>
         </div>
     </header>

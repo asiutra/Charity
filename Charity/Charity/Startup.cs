@@ -51,6 +51,12 @@ namespace Charity
                 options.SignIn.RequireConfirmedEmail = true;
             });
 
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                // token lifespan is limited to 2 hours
+                options.TokenLifespan = TimeSpan.FromHours(2);
+            });
+
             //Register all service
             services.AddScoped<IInstitutionService, InstitutionService>();
             services.AddScoped<ICategoryService, CategoryService>();
